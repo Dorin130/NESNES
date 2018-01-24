@@ -1,21 +1,25 @@
-#ifndef CPU_H
-#define CPU_H
-#include <stdint.h>
-
+#pragma once
+#include "shorttypes.h"
+#include "memory.h"
+enum Flag { C, Z, I, D, V, N };
 class CPU
 {
 public:
 	CPU();
-	~CPU();
+	CPU(Memory *);
+	u8 getFlags();
+	void setFlags(u8);
 	void PrintCPUInfo();
 private:
+	//Memory
+	Memory *ram;
 	//Registers
-	uint16_t rPC;
-	uint8_t rSP;
-	uint8_t rA;
-	uint8_t rX;
-	uint8_t rY;
-
+	u16 rPC;
+	u8 rSP;
+	u8 rA;
+	u8 rX;
+	u8 rY;
+	bool flags[6] = { 0 };
 	/*7  bit  0
 	---- ----
 	NVss DIZC
@@ -32,11 +36,4 @@ private:
 	|            or D6 from last BIT
 	+--------- Negative: Set to bit 7 of the last operation
 	*/
-	bool sN;
-	bool sV;
-	bool sD;
-	bool sI;
-	bool sZ;
-	bool sC;
 };
-#endif // CPU_H
